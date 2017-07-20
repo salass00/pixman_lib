@@ -10,6 +10,10 @@
  *    inline         must be defined
  *    force_inline   must be defined
  */
+#ifdef __amigaos4__
+# undef SIZE_MAX
+#endif
+
 #if defined (__GNUC__)
 #  define FUNC     ((const char*) (__PRETTY_FUNCTION__))
 #elif defined (__sun) || (defined (__STDC_VERSION__) && __STDC_VERSION__ >= 199901L)
@@ -110,6 +114,63 @@
     static type name
 #   define PIXMAN_GET_THREAD_LOCAL(name)				\
     (&name)
+
+#elif defined(__amigaos4__)
+
+#   include <proto/exec.h>
+
+#   define PIXMAN_DEFINE_THREAD_LOCAL(type, name) \
+    static const char tls_ ## name ## _id [] = #name; \
+     \
+    static type * \
+    tls_ ## name ## _alloc (void) \
+    { \
+        struct Task *me = IExec->FindTask(NULL); \
+        struct MemList ML, *mlist; \
+        type *result = NULL; \
+         \
+        ML.ml_NumEntries = 1; \
+        ML.ml_ME[0].me_Reqs = MEMF_PRIVATE | MEMF_CLEAR; \
+		ML.ml_ME[0].me_Length = sizeof(type); \
+         \
+        mlist = IExec->AllocTaskMemEntry(&ML); \
+        if (mlist) \
+        { \
+            mlist->ml_Node.ln_Name = tls_ ## name ## _id; \
+            IExec->AddHead(&me->tc_MemEntry, &mlist->ml_Node); \
+            result = mlist->ml_ME[0].me_Addr; \
+        } \
+         \
+        return result; \
+    } \
+     \
+    static type * \
+    tls_ ## name ## _get (void) \
+    { \
+        struct Task *me = IExec->FindTask(NULL); \
+        struct Node *node; \
+        struct MemList *mlist; \
+        type *result = NULL; \
+         \
+        for (node = me->tc_MemEntry.lh_Head; node->ln_Succ; node = node->ln_Succ) \
+        { \
+            mlist = (struct MemList *)node; \
+            if (mlist->ml_Node.ln_Name == tls_ ## name ## _id && \
+                mlist->ml_NumEntries == 1 && \
+                mlist->ml_ME[0].me_Length == sizeof(type)) \
+            { \
+                result = mlist->ml_ME[0].me_Addr; \
+            } \
+        } \
+         \
+        if (!result) \
+            result = tls_ ## name ## _alloc(); \
+         \
+        return result; \
+    }
+
+#   define PIXMAN_GET_THREAD_LOCAL(name) \
+    tls_ ## name ## _get ()
 
 #elif defined(TLS)
 
