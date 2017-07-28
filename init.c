@@ -100,6 +100,9 @@ STATIC BPTR libExpunge(struct LibraryManagerInterface *Self) {
 	return result;
 }
 
+extern void *global_implementation;
+extern void *_pixman_choose_implementation(void);
+
 /* The ROMTAG Init Function */
 STATIC struct PixmanBase *libInit(struct PixmanBase *libBase, BPTR seglist, struct ExecIFace *exec) {
 	libBase->libNode.lib_Node.ln_Type = NT_LIBRARY;
@@ -119,6 +122,8 @@ STATIC struct PixmanBase *libInit(struct PixmanBase *libBase, BPTR seglist, stru
 		IExec->Alert(AG_OpenLib|AO_NewlibLib);
 		goto error;
 	}
+
+	global_implementation = _pixman_choose_implementation();
 
 	return libBase;
 
