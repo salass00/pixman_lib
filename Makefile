@@ -25,7 +25,7 @@ init.o: $(TARGET)_rev.h pixman_vectors.c pixman_vectors.h
 $(main_OBJS): pixman_vectors.h
 
 $(PIXMANDIR)/pixman/.libs/libpixman-1.a:
-	cd $(PIXMANDIR) && ./configure --prefix=/SDK/local/newlib --host=ppc-amigaos --disable-shared --disable-vmx --disable-libpng
+	cd $(PIXMANDIR) && ./configure --prefix=/SDK/local/newlib --host=ppc-amigaos --disable-shared --disable-libpng
 	$(MAKE) -C $(PIXMANDIR)
 
 $(TARGET): $(OBJS) $(PIXMANDIR)/pixman/.libs/libpixman-1.a
