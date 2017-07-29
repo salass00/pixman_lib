@@ -1,0 +1,20 @@
+This is an AmigaOS shared library implementation of pixman. Pixman is a low-
+level pixel manipulation library used by the Cairo graphics library.
+
+The library is compiled with altivec support enabled although this is not
+tested so far since I don't have a machine with altivec.
+
+Installation:
+
+Copy Libs/pixman-1.library LIBS:
+
+Source code:
+
+The source code for current and older versions is available on github:
+
+https://github.com/salass00/pixman_lib
+
+Changes:
+
+For a list of changes in this and earlier versions see the releasenotes file.
+
