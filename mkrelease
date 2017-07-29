@@ -25,7 +25,7 @@ copy clone include/inline4/pixman.h ${destdir}/pixman_lib-$numvers/SDK/local/new
 copy clone ${pixmandir}/pixman/pixman.h ${destdir}/pixman_lib-$numvers/SDK/local/newlib/include/pixman-1
 copy clone ${pixmandir}/pixman/pixman-version.h ${destdir}/pixman_lib-$numvers/SDK/local/newlib/include/pixman-1
 copy clone libpixman-1.a ${destdir}/pixman_lib-$numvers/SDK/local/newlib/lib
-copy clone ${pixmandir}/pixman-1.pc ${destdir}/pixman_lib-$numvers/SDK/local/newlib/lib/pkgconfig
+copy clone pixman-build/pixman-1.pc ${destdir}/pixman_lib-$numvers/SDK/local/newlib/lib/pkgconfig
 
 sed "s/pixman_lib-xx.xx/pixman_lib-$numvers/g" AutoInstall > ${destdir}/AutoInstall
 

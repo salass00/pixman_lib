@@ -24,11 +24,14 @@ init.o: $(TARGET)_rev.h pixman_vectors.c pixman_vectors.h
 
 $(main_OBJS): pixman_vectors.h
 
-$(PIXMANDIR)/pixman/.libs/libpixman-1.a:
-	cd $(PIXMANDIR) && ./configure --prefix=/SDK/local/newlib --host=ppc-amigaos --disable-shared --disable-libpng
-	$(MAKE) -C $(PIXMANDIR)
+pixman-build:
+	mkdir $@
 
-$(TARGET): $(OBJS) $(PIXMANDIR)/pixman/.libs/libpixman-1.a
+pixman-build/pixman/.libs/libpixman-1.a: pixman-build
+	cd pixman-build && ../$(PIXMANDIR)/configure --prefix=/SDK/local/newlib --host=ppc-amigaos --disable-shared --disable-libpng
+	$(MAKE) -C pixman-build
+
+$(TARGET): $(OBJS) pixman-build/pixman/.libs/libpixman-1.a
 	$(CC) -nostartfiles -o $@.debug $^
 	$(STRIP) -R.comment -o $@ $@.debug
 
@@ -38,8 +41,8 @@ libpixman-1.a: static/autoinit_pixman_base.o static/autoinit_pixman_main.o stati
 
 .PHONY: clean
 clean:
-	$(RM) $(TARGET).debug *.o main/*.o static/*.o
-	-$(MAKE) -C $(PIXMANDIR) clean
+	rm -f $(TARGET).debug *.o main/*.o lib*.a static/*.o
+	rm -rf pixman-build
 
 .PHONY: revision
 revision:
