@@ -1,0 +1,10 @@
+(welcome)
+(set @default-dest "LIBS:")
+(copylib
+	(prompt "Copying pixman-1.library")
+	(help @copylib-help)
+	(source "Libs/pixman-1.library")
+	(dest @default-dest)
+	(confirm)
+)
+(exit)
