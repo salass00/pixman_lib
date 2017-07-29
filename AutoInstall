@@ -1,0 +1,4 @@
+; AutoInstall script for AmiUpdate
+
+CopyStore pixman_lib-xx.xx/Libs/pixman-1.library LIBS:
+
