@@ -1,0 +1,55 @@
+; Script for generating a release archive
+
+make all
+
+set pixmandir pixman-0.34.0
+set destdir RAM:mkrelease
+set fullvers `version file pixman-1.library`
+set numvers `cut "$fullvers" word 2`
+
+delete all force ${destdir}
+makedir all force ${destdir}/pixman_lib-$numvers/Libs
+makedir all force ${destdir}/pixman_lib-$numvers/SDK/local/newlib/include/proto
+makedir all force ${destdir}/pixman_lib-$numvers/SDK/local/newlib/include/interfaces
+makedir all force ${destdir}/pixman_lib-$numvers/SDK/local/newlib/include/inline4
+makedir all force ${destdir}/pixman_lib-$numvers/SDK/local/newlib/include/pixman-1
+makedir all force ${destdir}/pixman_lib-$numvers/SDK/local/newlib/lib/pkgconfig
+
+copy clone Install ${destdir}/pixman_lib-$numvers
+copy clone LICENSE ${destdir}/pixman_lib-$numvers
+copy clone releasenotes ${destdir}/pixman_lib-$numvers
+copy clone pixman-1.library ${destdir}/pixman_lib-$numvers/Libs
+copy clone include/proto/pixman.h ${destdir}/pixman_lib-$numvers/SDK/local/newlib/include/proto
+copy clone include/interfaces/pixman.h ${destdir}/pixman_lib-$numvers/SDK/local/newlib/include/interfaces
+copy clone include/inline4/pixman.h ${destdir}/pixman_lib-$numvers/SDK/local/newlib/include/inline4
+copy clone ${pixmandir}/pixman/pixman.h ${destdir}/pixman_lib-$numvers/SDK/local/newlib/include/pixman-1
+copy clone ${pixmandir}/pixman/pixman-version.h ${destdir}/pixman_lib-$numvers/SDK/local/newlib/include/pixman-1
+copy clone libpixman-1.a ${destdir}/pixman_lib-$numvers/SDK/local/newlib/lib
+copy clone ${pixmandir}/pixman-1.pc ${destdir}/pixman_lib-$numvers/SDK/local/newlib/lib/pkgconfig
+
+sed "s/pixman_lib-xx.xx/pixman_lib-$numvers/g" AutoInstall > ${destdir}/AutoInstall
+
+echo "Short:        Pixman-1 as an AmigaOS shared library" > ${destdir}/pixman_lib-$numvers/pixman_lib.readme
+echo "Author:       Fredrik Wikstrom" >> ${destdir}/pixman_lib-$numvers/pixman_lib.readme
+echo "Uploader:     Fredrik Wikstrom <fredrik@a500.org>" >> ${destdir}/pixman_lib-$numvers/pixman_lib.readme
+echo "Type:         util/libs" >> ${destdir}/pixman_lib-$numvers/pixman_lib.readme
+echo "Version:      $numvers" >> ${destdir}/pixman_lib-$numvers/pixman_lib.readme
+echo "Architecture: ppc-amigaos" >> ${destdir}/pixman_lib-$numvers/pixman_lib.readme
+echo "" >> ${destdir}/pixman_lib-$numvers/pixman_lib.readme
+type README >> ${destdir}/pixman_lib-$numvers/pixman_lib.readme
+
+copy clone ENV:Sys/def_drawer.info ${destdir}/pixman_lib-$numvers.info
+copy clone ENV:Sys/def_install.info ${destdir}/pixman_lib-$numvers/Install.info
+copy clone ENV:Sys/def_ascii.info ${destdir}/pixman_lib-$numvers/pixman_lib.readme.info
+copy clone ENV:Sys/def_ascii.info ${destdir}/pixman_lib-$numvers/LICENSE.info
+copy clone ENV:Sys/def_ascii.info ${destdir}/pixman_lib-$numvers/releasenotes.info
+
+changetooltype ${destdir}/pixman_lib-$numvers/Install.info ADD "APPNAME=pixman-1.library"
+
+delete force RAM:pixman_lib.lha
+lha a -x -r RAM:pixman_lib.lha ${destdir}/
+
+echo "RAM:pixman_lib.lha created"
+
+copy clone ${destdir}/pixman_lib-$numvers/pixman_lib.readme RAM:
+
