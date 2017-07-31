@@ -18,6 +18,8 @@ endif
 PIXMANDIR := pixman-0.34.0
 
 CFLAGS  := -O2 -fomit-frame-pointer -g -I./include -I./$(PIXMANDIR)/pixman -Wall -Wwrite-strings -Werror
+LDFLAGS := -static
+LIBS    := pixman-build/pixman/.libs/libpixman-1.a
 
 main_SRCS := main/Obtain.c main/Release.c
 main_OBJS := $(main_SRCS:.c=.o)
@@ -42,7 +44,7 @@ build-pixman: pixman-build/Makefile
 	$(MAKE) -C pixman-build
 
 $(TARGET): $(OBJS) build-pixman
-	$(CC) -nostartfiles -o $@.debug $(OBJS) pixman-build/pixman/.libs/libpixman-1.a
+	$(CC) $(LDFLAGS) -nostartfiles -o $@.debug $(OBJS) $(LIBS)
 	$(STRIP) -R.comment -o $@ $@.debug
 
 libpixman-1.a: static/autoinit_pixman_base.o static/autoinit_pixman_main.o static/stubs.o
