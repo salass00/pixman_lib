@@ -17,7 +17,7 @@ makedir all force ${destdir}/pixman_lib-$numvers/SDK/local/newlib/lib/pkgconfig
 
 copy clone Install ${destdir}/pixman_lib-$numvers
 copy clone LICENSE ${destdir}/pixman_lib-$numvers
-copy clone COPYING ${destdir}/pixman_lib-$numvers/COPYING-pixman
+copy clone ${pixmandir}/COPYING ${destdir}/pixman_lib-$numvers/COPYING-pixman
 copy clone releasenotes ${destdir}/pixman_lib-$numvers
 copy clone pixman-1.library ${destdir}/pixman_lib-$numvers/Libs
 copy clone include/proto/pixman.h ${destdir}/pixman_lib-$numvers/SDK/local/newlib/include/proto
