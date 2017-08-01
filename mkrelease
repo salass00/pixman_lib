@@ -17,6 +17,7 @@ makedir all force ${destdir}/pixman_lib-$numvers/SDK/local/newlib/lib/pkgconfig
 
 copy clone Install ${destdir}/pixman_lib-$numvers
 copy clone LICENSE ${destdir}/pixman_lib-$numvers
+copy clone COPYING ${destdir}/pixman_lib-$numvers/COPYING-pixman
 copy clone releasenotes ${destdir}/pixman_lib-$numvers
 copy clone pixman-1.library ${destdir}/pixman_lib-$numvers/Libs
 copy clone include/proto/pixman.h ${destdir}/pixman_lib-$numvers/SDK/local/newlib/include/proto
@@ -42,6 +43,7 @@ copy clone ENV:Sys/def_drawer.info ${destdir}/pixman_lib-$numvers.info
 copy clone ENV:Sys/def_install.info ${destdir}/pixman_lib-$numvers/Install.info
 copy clone ENV:Sys/def_ascii.info ${destdir}/pixman_lib-$numvers/pixman_lib.readme.info
 copy clone ENV:Sys/def_ascii.info ${destdir}/pixman_lib-$numvers/LICENSE.info
+copy clone ENV:Sys/def_ascii.info ${destdir}/pixman_lib-$numvers/COPYING-pixman.info
 copy clone ENV:Sys/def_ascii.info ${destdir}/pixman_lib-$numvers/releasenotes.info
 
 changetooltype ${destdir}/pixman_lib-$numvers/Install.info ADD "APPNAME=pixman-1.library"
