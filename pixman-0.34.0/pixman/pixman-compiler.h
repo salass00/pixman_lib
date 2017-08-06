@@ -167,6 +167,28 @@
             result = tls_ ## name ## _alloc(); \
          \
         return result; \
+    } \
+     \
+    void \
+    tls_ ## name ## _free (void) \
+    { \
+        struct Task *me = IExec->FindTask(NULL); \
+        struct Node *node; \
+        struct MemList *mlist; \
+        type *result = NULL; \
+         \
+        for (node = me->tc_MemEntry.lh_Head; node->ln_Succ; node = node->ln_Succ) \
+        { \
+            mlist = (struct MemList *)node; \
+            if (mlist->ml_Node.ln_Name == tls_ ## name ## _id && \
+                mlist->ml_NumEntries == 1 && \
+                mlist->ml_ME[0].me_Length == sizeof(type)) \
+            { \
+                IExec->Remove(&mlist->ml_Node); \
+                IExec->FreeEntry(mlist); \
+                return; \
+            } \
+        } \
     }
 
 #   define PIXMAN_GET_THREAD_LOCAL(name) \

@@ -65,10 +65,14 @@ STATIC struct Library *libOpen(struct LibraryManagerInterface *Self, ULONG versi
 	return libBase;
 }
 
+void tls_fast_path_cache_free(void);
 
 /* Close the library */
 STATIC BPTR libClose(struct LibraryManagerInterface *Self) {
 	struct Library *libBase = Self->Data.LibBase;
+
+	/* Free TLS data */
+	tls_fast_path_cache_free();
 
 	/* Make sure to undo what open did */
 
@@ -77,7 +81,6 @@ STATIC BPTR libClose(struct LibraryManagerInterface *Self) {
 
 	return ZERO;
 }
-
 
 /* Expunge the library */
 STATIC BPTR libExpunge(struct LibraryManagerInterface *Self) {
