@@ -6,6 +6,7 @@ pixman-1.library 53.1 (29.7.2017)
 pixman-1.library 53.2 (6.8.2017)
 
 - Made libClose() free the TLS data of the current process. This should stop
-  dos.library from complaining about tc_Entry being non-empty on return when
-  the program has been run from the commandline or using IDOS->RunCommand().
+  dos.library from complaining about the tc_MemEntry list being not empty on
+  return when the program has been run from the commandline or using
+  IDOS->RunCommand().
 
