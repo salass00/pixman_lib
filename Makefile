@@ -26,6 +26,8 @@ CFLAGS  := $(OPTIMIZE) $(DEBUG) $(INCLUDES) $(WARNINGS)
 LDFLAGS := -static
 LIBS    := pixman-build/pixman/.libs/libpixman-1.a
 
+STRIPFLAGS := -R.comment --strip-unneeded-rel-relocs
+
 main_SRCS := main/Obtain.c main/Release.c
 main_OBJS := $(main_SRCS:.c=.o)
 
@@ -50,7 +52,7 @@ build-pixman: pixman-build/Makefile
 
 $(TARGET): $(OBJS) build-pixman
 	$(CC) $(LDFLAGS) -nostartfiles -o $@.debug $(OBJS) $(LIBS)
-	$(STRIP) -R.comment -o $@ $@.debug
+	$(STRIP) $(STRIPFLAGS) -o $@ $@.debug
 
 libpixman-1.a: static/autoinit_pixman_base.o static/autoinit_pixman_main.o static/stubs.o
 	$(AR) -crv $@ $^
