@@ -17,7 +17,12 @@ endif
 
 PIXMANDIR := pixman-0.34.0
 
-CFLAGS  := -O2 -fomit-frame-pointer -g -I./include -I./$(PIXMANDIR)/pixman -Wall -Wwrite-strings -Werror
+OPTIMIZE := -O2 -fomit-frame-pointer
+DEBUG    := -g
+INCLUDES := -I./include -I./$(PIXMANDIR)/pixman
+WARNINGS := -Wall -Wwrite-strings -Werror
+
+CFLAGS  := $(OPTIMIZE) $(DEBUG) $(INCLUDES) $(WARNINGS)
 LDFLAGS := -static
 LIBS    := pixman-build/pixman/.libs/libpixman-1.a
 

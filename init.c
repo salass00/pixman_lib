@@ -32,7 +32,8 @@
 #include <interfaces/pixman.h>
 #include "pixman-1.library_rev.h"
 
-STATIC CONST UBYTE USED verstag[] = VERSTAG;
+static const USED TEXT verstag[] = VERSTAG;
+static const USED TEXT extversion[] = "\0$EXTVER: libpixman-1 " PIXMAN_VERSION_STRING " (" DATE ")";
 
 struct PixmanBase {
 	struct Library libNode;
