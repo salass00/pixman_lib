@@ -42,12 +42,40 @@ struct PixmanBase {
 };
 
 struct ExecIFace *IExec;
-struct Library *NewlibBase;
 struct Interface *INewlib;
 
 int32 _start(void) {
 	/* If you feel like it, open DOS and print something to the user */
 	return RETURN_FAIL;
+}
+
+static struct Interface *OpenInterface(CONST_STRPTR name, ULONG version) {
+	struct Library   *library;
+	struct Interface *interface;
+
+	library = IExec->OpenLibrary(name, version);
+	if (library == NULL)
+		return NULL;
+
+	interface = IExec->GetInterface(library, "main", 1, NULL);
+	if (interface == NULL) {
+		IExec->CloseLibrary(library);
+		return NULL;
+	}
+
+	return interface;
+}
+
+static void CloseInterface(struct Interface *interface) {
+	struct Library *library;
+
+	if (interface == NULL)
+		return;
+
+	library = interface->Data.LibBase;
+
+	IExec->DropInterface(interface);
+	IExec->CloseLibrary(library);
 }
 
 /* Open the library */
@@ -91,8 +119,7 @@ STATIC BPTR libExpunge(struct LibraryManagerInterface *Self) {
 		result = libBase->segList;
 
 		/* Undo what the init code did */
-		IExec->DropInterface(INewlib);
-		IExec->CloseLibrary(NewlibBase);
+		CloseInterface(INewlib);
 
 		IExec->Remove((struct Node *)libBase);
 		IExec->DeleteLibrary((struct Library *)libBase);
@@ -120,10 +147,9 @@ STATIC struct PixmanBase *libInit(struct PixmanBase *libBase, BPTR seglist, stru
 	libBase->segList = seglist;
 	IExec = exec;
 
-	NewlibBase = IExec->OpenLibrary("newlib.library", 52);
-	INewlib = IExec->GetInterface(NewlibBase, "main", 1, NULL);
-	if (!INewlib) {
-		IExec->Alert(AG_OpenLib|AO_NewlibLib);
+	INewlib = OpenInterface("newlib.library", 52);
+	if (INewlib == NULL) {
+		IExec->Alert(AG_OpenLib | AO_NewlibLib);
 		goto error;
 	}
 
@@ -132,7 +158,6 @@ STATIC struct PixmanBase *libInit(struct PixmanBase *libBase, BPTR seglist, stru
 	return libBase;
 
 error:
-	IExec->CloseLibrary(NewlibBase);
 
 	IExec->DeleteLibrary((struct Library *)libBase);
 	return NULL;
