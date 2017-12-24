@@ -11,7 +11,7 @@ pixman-1.library 53.2 (6.8.2017)
   IDOS->RunCommand().
 
 
-pixman-1.library 53.3 (xx.xx.2017)
+pixman-1.library 53.3 (24.12.2017)
 
 - Added missing terminator entry in main_v1_vectors array.
 
