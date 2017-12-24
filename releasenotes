@@ -10,3 +10,8 @@ pixman-1.library 53.2 (6.8.2017)
   return when the program has been run from the commandline or using
   IDOS->RunCommand().
 
+
+pixman-1.library 53.3 (xx.xx.2017)
+
+- Added missing terminator entry in main_v1_vectors array.
+

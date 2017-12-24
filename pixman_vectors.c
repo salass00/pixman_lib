@@ -177,6 +177,7 @@ static const APTR main_v1_vectors[] =
 	pixman_rasterize_trapezoid,
 	pixman_composite_trapezoids,
 	pixman_composite_triangles,
-	pixman_add_triangles
+	pixman_add_triangles,
+	(APTR)-1
 };
 
