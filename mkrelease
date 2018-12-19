@@ -2,7 +2,7 @@
 
 make all
 
-set pixmandir pixman-0.34.0
+set pixmandir pixman-0.36.0
 set destdir RAM:mkrelease
 set fullvers `version file pixman-1.library`
 set numvers `cut "$fullvers" word 2`

@@ -15,7 +15,7 @@ else
 	HOSTARG := 
 endif
 
-PIXMANDIR := pixman-0.34.0
+PIXMANDIR := pixman-0.36.0
 
 OPTIMIZE := -O2 -fomit-frame-pointer
 DEBUG    := -g
