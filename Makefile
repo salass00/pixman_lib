@@ -19,7 +19,7 @@ PIXMANDIR := pixman-0.34.0
 
 OPTIMIZE := -O2 -fomit-frame-pointer
 DEBUG    := -g
-INCLUDES := -I./include -I./$(PIXMANDIR)/pixman
+INCLUDES := -I./include -I./pixman-build/pixman -I./$(PIXMANDIR)/pixman
 WARNINGS := -Wall -Wwrite-strings -Werror
 
 CFLAGS  := $(OPTIMIZE) $(DEBUG) $(INCLUDES) $(WARNINGS)
@@ -50,7 +50,7 @@ pixman-build/Makefile: $(PIXMANDIR)/configure
 build-pixman: pixman-build/Makefile
 	$(MAKE) -C pixman-build
 
-$(TARGET): $(OBJS) build-pixman
+$(TARGET): build-pixman $(OBJS)
 	$(CC) $(LDFLAGS) -nostartfiles -o $@.debug $(OBJS) $(LIBS)
 	$(STRIP) $(STRIPFLAGS) -o $@ $@.debug
 
