@@ -107,7 +107,25 @@ pixman_have_vmx (void)
     return have_vmx;
 }
 
-#else /* !__APPLE__ && !__OpenBSD__ && !__linux__ */
+#elif defined(__amigaos4__)
+
+#include <proto/exec.h>
+
+static pixman_bool_t
+pixman_have_vmx (void)
+{
+    int have_vmx = FALSE;
+    uint32 vector_unit = VECTORTYPE_NONE;
+
+    IExec->GetCPUInfoTags(GCIT_VectorUnit, &vector_unit, TAG_END);
+
+    if (vector_unit == VECTORTYPE_ALTIVEC)
+        have_vmx = TRUE;
+
+    return have_vmx;
+}
+
+#else /* !__APPLE__ && !__OpenBSD__ && !__linux__ && !__amigaos4__ */
 #include <signal.h>
 #include <setjmp.h>
 
