@@ -18,7 +18,7 @@ pixman-1.library 53.3 (24.12.2017)
 - Added the libpixman-1 version as an extra version string.
 
 
-pixman-1.library 53.4 (xx.xx.2018)
+pixman-1.library 53.4 (20.12.2018)
 
 - Updated to pixman version 0.36.0.
 
