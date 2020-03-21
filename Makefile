@@ -17,6 +17,8 @@ endif
 
 PIXMANDIR := pixman-0.36.0
 
+LIBPIXMAN := pixman-build/pixman/.libs/libpixman-1.a
+
 OPTIMIZE := -O2 -fomit-frame-pointer
 DEBUG    := -g
 INCLUDES := -I./include -I./pixman-build/pixman -I./$(PIXMANDIR)/pixman
@@ -24,7 +26,7 @@ WARNINGS := -Wall -Wwrite-strings -Werror
 
 CFLAGS  := $(OPTIMIZE) $(DEBUG) $(INCLUDES) $(WARNINGS)
 LDFLAGS := -static
-LIBS    := pixman-build/pixman/.libs/libpixman-1.a
+LIBS    := 
 
 STRIPFLAGS := -R.comment --strip-unneeded-rel-relocs
 
@@ -50,8 +52,11 @@ pixman-build/Makefile: $(PIXMANDIR)/configure
 build-pixman: pixman-build/Makefile
 	$(MAKE) -C pixman-build
 
-$(TARGET): build-pixman $(OBJS)
-	$(CC) $(LDFLAGS) -nostartfiles -o $@.debug $(OBJS) $(LIBS)
+$(LIBPIXMAN): build-pixman
+	@true
+
+$(TARGET): $(OBJS) $(LIBPIXMAN)
+	$(CC) $(LDFLAGS) -nostartfiles -o $@.debug $^ $(LIBS)
 	$(STRIP) $(STRIPFLAGS) -o $@ $@.debug
 
 libpixman-1.a: static/autoinit_pixman_base.o static/autoinit_pixman_main.o static/stubs.o
