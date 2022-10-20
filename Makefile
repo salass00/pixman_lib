@@ -15,7 +15,7 @@ else
 	HOSTARG := 
 endif
 
-PIXMANDIR := pixman-0.36.0
+PIXMANDIR := pixman-0.42.0
 
 LIBPIXMAN := pixman-build/pixman/.libs/libpixman-1.a
 
